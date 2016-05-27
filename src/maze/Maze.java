@@ -13,6 +13,13 @@ public class Maze {
 	
 	private ArrayList<int[]> directlyConnectedRooms;
 
+	/*
+	 * MazeGenerateType
+	 * SOLVABLE - 
+	 * 			generate the maze until the start room and end room are connected.
+	 * COMPLETE - 
+	 * 			generate until all the rooms are connected.
+	 */
 	public enum MazeGenerateType {
 		SOLVABLE, COMPLETE
 	}
@@ -89,14 +96,7 @@ public class Maze {
 			if (ds.getSize() <= 1) {
 				return true;
 			}
-
-			// all the rooms connected?
-			for (int i = 1; i < ds.getSize(); ++i) {
-				if (ds.find(0) != ds.find(i)) {
-					return false;
-				}
-			}
-			return true;
+			return ds.isSingleSet();
 		default:
 			System.err.println("Unknown Maze Generation Type " + type);
 			return true;

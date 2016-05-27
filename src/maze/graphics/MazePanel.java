@@ -26,8 +26,7 @@ public class MazePanel extends JPanel {
 				JFrame f = new JFrame();
 				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				f.setTitle("Maze");
-				f.getContentPane().add(new MazePanel(20, 20, new int[] { 0, 0 }, new int[] { 1, 1 },
-						MazeGenerateType.COMPLETE));
+				f.getContentPane().add(new MazePanel(20, 20, MazeGenerateType.COMPLETE));
 
 				f.pack();
 				f.setVisible(true);
@@ -72,11 +71,11 @@ public class MazePanel extends JPanel {
 
 		int xMax = m.getSize().getMazeWidth();
 		int yMax = m.getSize().getMazeHeight();
-		
-		int roomMaxWidth = ((getWidth()-lineSize) / xMax) - lineSize;
-		int roomMaxHeight = ((getHeight()-lineSize) / yMax) - lineSize;
-		
-		int roomSize = Math.min(roomMaxWidth, roomMaxHeight) ;
+
+		int roomMaxWidth = ((getWidth() - lineSize) / xMax) - lineSize;
+		int roomMaxHeight = ((getHeight() - lineSize) / yMax) - lineSize;
+
+		int roomSize = Math.min(roomMaxWidth, roomMaxHeight);
 
 		// draw borders
 		int width = (roomSize + lineSize) * xMax;
@@ -86,25 +85,25 @@ public class MazePanel extends JPanel {
 		g2d.fillRect(0, 0, lineSize, height);
 		g2d.fillRect(width, 0, lineSize, height + lineSize);
 		g2d.fillRect(0, height, width + lineSize, lineSize);
-		
+
 		// draw inside lines
 		int yPos, xPos;
 		for (int y = 0; y < yMax; ++y) {
 			for (int x = 0; x < xMax; ++x) {
 				int roomNumber = y * xMax + x;
 
-				//right line
+				// right line
 				if (x + 1 < xMax && !m.isRoomConnected(roomNumber, roomNumber + 1)) {
 					yPos = (lineSize + roomSize) * y;
 					xPos = (lineSize + roomSize) * (x + 1);
-					g2d.fillRect(xPos, yPos, lineSize, roomSize + 2*lineSize);
+					g2d.fillRect(xPos, yPos, lineSize, roomSize + 2 * lineSize);
 				}
-//
-				//bottom line
+				//
+				// bottom line
 				if (y + 1 < yMax && !m.isRoomConnected(roomNumber, roomNumber + xMax)) {
 					yPos = (lineSize + roomSize) * (y + 1);
 					xPos = (lineSize + roomSize) * x;
-					g2d.fillRect(xPos, yPos, roomSize + 2*lineSize, lineSize);
+					g2d.fillRect(xPos, yPos, roomSize + 2 * lineSize, lineSize);
 				}
 			}
 		}
