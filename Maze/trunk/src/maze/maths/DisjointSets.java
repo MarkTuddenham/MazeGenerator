@@ -6,13 +6,13 @@ public class DisjointSets {
 
 	public DisjointSets(int numElements) {
 		s = new int[numElements];
-		for (int i = 0; i < s.length; i++){
+		for (int i = 0; i < s.length; i++) {
 			s[i] = -1;
 		}
 	}
 
 	public void union(int root1, int root2) throws DisjointSetsException {
-		if(root1 == root2){
+		if (root1 == root2) {
 			throw new DisjointSetsException("Cannot union the same element");
 		}
 		if (s[root2] < s[root1]) {
@@ -34,6 +34,20 @@ public class DisjointSets {
 
 	public int getSize() {
 		return s.length;
+	}
+
+	public int getNumberOfSets() {
+		int c = 0;
+		for (int i : s) {
+			if (i < 0) {
+				c++;
+			}
+		}
+		return c;
+	}
+
+	public boolean isSingleSet() {
+		return getNumberOfSets() == 1;
 	}
 
 }
