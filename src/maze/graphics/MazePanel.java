@@ -1,6 +1,5 @@
 package maze.graphics;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -69,39 +68,43 @@ public class MazePanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setStroke(new BasicStroke(lineSize));
 		g2d.setColor(Color.BLUE);
 
 		int xMax = m.getSize().getMazeWidth();
 		int yMax = m.getSize().getMazeHeight();
-		int roomSize = Math.min(getWidth(), getHeight()) / Math.max(xMax, yMax) - lineSize;
+		
+		int roomMaxWidth = ((getWidth()-lineSize) / xMax) - lineSize;
+		int roomMaxHeight = ((getHeight()-lineSize) / yMax) - lineSize;
+		
+		int roomSize = Math.min(roomMaxWidth, roomMaxHeight) ;
 
 		// draw borders
 		int width = (roomSize + lineSize) * xMax;
 		int height = (roomSize + lineSize) * yMax;
-		int lineAdjust = lineSize / 2;
 
-		g2d.drawLine(0, lineAdjust, width, lineAdjust);
-		g2d.drawLine(lineAdjust, 0, lineAdjust, height);
-		g2d.drawLine(width, 0, width, height);
-		g2d.drawLine(0, height, width, height);
-
+		g2d.fillRect(0, 0, width, lineSize);
+		g2d.fillRect(0, 0, lineSize, height);
+		g2d.fillRect(width, 0, lineSize, height + lineSize);
+		g2d.fillRect(0, height, width + lineSize, lineSize);
+		
 		// draw inside lines
 		int yPos, xPos;
 		for (int y = 0; y < yMax; ++y) {
 			for (int x = 0; x < xMax; ++x) {
 				int roomNumber = y * xMax + x;
 
+				//right line
 				if (x + 1 < xMax && !m.isRoomConnected(roomNumber, roomNumber + 1)) {
 					yPos = (lineSize + roomSize) * y;
 					xPos = (lineSize + roomSize) * (x + 1);
-					g2d.drawLine(xPos, yPos, xPos, yPos + roomSize + lineSize / 2);
+					g2d.fillRect(xPos, yPos, lineSize, roomSize + 2*lineSize);
 				}
-
+//
+				//bottom line
 				if (y + 1 < yMax && !m.isRoomConnected(roomNumber, roomNumber + xMax)) {
 					yPos = (lineSize + roomSize) * (y + 1);
 					xPos = (lineSize + roomSize) * x;
-					g2d.drawLine(xPos, yPos, xPos + roomSize + lineSize / 2, yPos);
+					g2d.fillRect(xPos, yPos, roomSize + 2*lineSize, lineSize);
 				}
 			}
 		}
